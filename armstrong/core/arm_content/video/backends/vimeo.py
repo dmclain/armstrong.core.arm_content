@@ -4,7 +4,7 @@ from .base import BaseVideoBackend
 
 
 class VimeoBackend(BaseVideoBackend):
-    type = "vimeo"
+    folder = "vimeo"
 
     def prepare(self, embed):
         if not getattr(embed, "raw_url", False):
