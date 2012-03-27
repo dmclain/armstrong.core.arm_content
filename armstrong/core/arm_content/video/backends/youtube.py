@@ -4,7 +4,7 @@ from .base import BaseVideoBackend
 
 
 class YouTubeBackend(BaseVideoBackend):
-    type = "YouTube"
+    type = "youtube"
 
     def prepare(self, embed):
         embed.url = urllib2.urlparse.urlparse(embed.raw_url)
