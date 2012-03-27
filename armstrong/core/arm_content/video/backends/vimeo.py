@@ -1,9 +1,11 @@
 import urllib2
 
-from .helpers import inject_defaults
+from .base import BaseVideoBackend
 
 
-class VimeoBackend(object):
+class VimeoBackend(BaseVideoBackend):
+    type = "vimeo"
+
     def prepare(self, embed):
         if not getattr(embed, "raw_url", False):
             return
@@ -15,12 +17,3 @@ class VimeoBackend(object):
         embed.url = url
         embed.id = url.path.lstrip("/")
         return True
-
-    @inject_defaults
-    def embed(self, embed, width=None, height=None):
-        return "".join([
-            '<iframe src="http://player.vimeo.com/video/%s' % embed.id,
-            '?title=0&amp;byline=0&amp;portrait=0" ',
-            'width="%s" height="%s" frameborder="0"></iframe>' % \
-                    (width, height)
-        ])
