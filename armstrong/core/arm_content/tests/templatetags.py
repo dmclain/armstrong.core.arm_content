@@ -39,3 +39,9 @@ class RenderVideoTestCase(ArmContentTestCase):
             '<iframe title="YouTube video player" width="320" height="240" '
             'src="http://www.youtube.com/embed/oHg5SJYRHA0" frameborder="0" '
             'allowfullscreen></iframe>')
+
+    def test_render_video_filter_with_args(self):
+        obj = SimpleVideoModel(source="http://www.youtube.com/watch?v=oHg5SJYRHA0")
+        t = template.Template("{% load content_helpers %}{{ obj.source|render_video:'layout=nonstandard&foo=1&bar=2' }}")
+        result = t.render(template.Context({'obj': obj}))
+        self.assertEqual(result, u'12')

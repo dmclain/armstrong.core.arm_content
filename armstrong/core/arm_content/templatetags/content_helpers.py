@@ -16,5 +16,5 @@ def render_video(value, arg):
     if arg.find('=') == -1:
         args = get_preset_args(arg)
     else:
-        args = urlparse.parse_qs(arg)
+        args = dict(urlparse.parse_qsl(arg))
     return value.backend.embed(value, **args)
