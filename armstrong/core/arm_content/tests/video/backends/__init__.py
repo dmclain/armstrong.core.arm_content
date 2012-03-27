@@ -29,18 +29,18 @@ class GetBackendTestCase(ArmContentTestCase):
         settings = fudge.Fake()
         settings.has_attr(ARMSTRONG_EXTERNAL_VIDEO_BACKEND=backend_name)
 
-        backends.backend.settings = settings
-        backend = backends.get_backend()
-        self.assertIsA(backend, TestableBackend)
+        with fudge.patched_context(backends.backend, 'settings', settings):
+            backend = backends.get_backend()
+            self.assertIsA(backend, TestableBackend)
 
     def test_uses_injected_settings_if_provided(self):
         backend_name = self.backend_name('SomeOtherTestableBackend')
         settings = fudge.Fake()
         settings.has_attr(ARMSTRONG_EXTERNAL_VIDEO_BACKEND=backend_name)
-        backends.backend.settings = settings
-
-        backend = backends.get_backend()
-        self.assertIsA(backend, SomeOtherTestableBackend)
+        
+        with fudge.patched_context(backends.backend, 'settings', settings):
+            backend = backends.get_backend()
+            self.assertIsA(backend, SomeOtherTestableBackend)
 
     def test_returns_MultipleBackend_if_configured_with_a_list(self):
         my_backends = [self.backend_name('TestableBackend'),
@@ -48,10 +48,10 @@ class GetBackendTestCase(ArmContentTestCase):
 
         settings = fudge.Fake()
         settings.has_attr(ARMSTRONG_EXTERNAL_VIDEO_BACKEND=my_backends)
-        backends.backend.settings = settings
 
-        backend = backends.get_backend()
-        self.assertIsA(backend, MultipleBackendProxy)
+        with fudge.patched_context(backends.backend, 'settings', settings):
+            backend = backends.get_backend()
+            self.assertIsA(backend, MultipleBackendProxy)
 
 
 class InjectDefaultsDecoratorTestCase(ArmContentTestCase):
