@@ -4,7 +4,7 @@ from django.db import models
 from django import template
 from taggit.managers import TaggableManager
 
-from .arm_content_support.models import SorlImage
+from .arm_content_support.models import SimpleVideoModel
 
 from armstrong.core.arm_content.templatetags import content_helpers
 
@@ -28,3 +28,14 @@ class ThumbnailTestCase(ArmContentTestCase):
             result = t.render(template.Context({'obj': obj}))
         self.assertEqual(result, thumb_url)
         fudge.verify()
+
+
+class RenderVideoTestCase(ArmContentTestCase):
+    def test_render_video_filter(self):
+        obj = SimpleVideoModel(source="http://www.youtube.com/watch?v=oHg5SJYRHA0")
+        t = template.Template("{% load content_helpers %}{{ obj.source|render_video:'qvga' }}")
+        result = t.render(template.Context({'obj': obj}))
+        self.assertEqual(result,
+            '<iframe title="YouTube video player" width="320" height="240" '
+            'src="http://www.youtube.com/embed/oHg5SJYRHA0" frameborder="0" '
+            'allowfullscreen></iframe>')
