@@ -20,6 +20,9 @@ class EmbeddedVideo(object):
     def embed(self, **kwargs):
         return self.backend.embed(self, **kwargs)
 
+    def __len__(self):
+        return len(self.raw_url)
+
 
 class EmbeddedVideoField(models.URLField):
     __metaclass__ = models.SubfieldBase
