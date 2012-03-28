@@ -16,5 +16,6 @@ def render_video(value, arg):
     if arg.find('=') == -1:
         args = get_preset_args(arg)
     else:
+    	# regular parse_qs returns lists as values, we just want the first value
         args = dict(urlparse.parse_qsl(arg))
     return value.embed(**args)
