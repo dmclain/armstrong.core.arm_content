@@ -27,6 +27,7 @@ class EmbeddedVideoField(models.URLField):
     def __init__(self, *args, **kwargs):
         kwargs['max_length'] = 255
         super(EmbeddedVideoField, self).__init__(self, *args, **kwargs)
+        self.validators = []
 
     def get_prep_value(self, value):
         return value.raw_url
@@ -35,7 +36,7 @@ class EmbeddedVideoField(models.URLField):
         if isinstance(value, EmbeddedVideo):
             return value
 
-        return EmbeddedVideo(value)
+        return EmbeddedVideo(url=value)
 
     def formfield(self, **kwargs):
         defaults = {
